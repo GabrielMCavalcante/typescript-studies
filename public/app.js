@@ -1,4 +1,5 @@
-"use strict";
+import Invoice from './classes/Invoice.js';
+import Payment from './classes/Payment.js';
 const form = document.querySelector('.new-item-form');
 const type = document.querySelector('#type');
 const tofrom = document.querySelector('#tofrom');
@@ -32,23 +33,3 @@ form.addEventListener('submit', (e) => {
         ordersList.appendChild(orderLi);
     });
 });
-class Invoice {
-    constructor(userData) {
-        this.client = userData.client;
-        this.details = userData.details;
-        this.amount = userData.amount;
-    }
-    format() {
-        return `${this.client} owes £${this.amount} for ${this.details}.`;
-    }
-}
-class Payment {
-    constructor(userData) {
-        this.client = userData.client;
-        this.details = userData.details;
-        this.amount = userData.amount;
-    }
-    format() {
-        return `${this.client} is owned £${this.amount} for ${this.details}.`;
-    }
-}

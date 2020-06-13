@@ -1,3 +1,6 @@
+import Invoice from './classes/Invoice.js'
+import Payment from './classes/Payment.js'
+
 const form = document.querySelector('.new-item-form') as HTMLFormElement
 
 const type = document.querySelector('#type') as HTMLSelectElement
@@ -42,37 +45,3 @@ form.addEventListener('submit', (e: Event) => {
         ordersList.appendChild(orderLi)
     })
 })
-
-class Invoice {
-
-    readonly client: string
-    readonly details: string
-    readonly amount: number
-
-    constructor(userData: { client: string, details: string, amount: number }) {
-        this.client = userData.client
-        this.details = userData.details
-        this.amount = userData.amount
-    }
-
-    format() {
-        return `${this.client} owes £${this.amount} for ${this.details}.`
-    }
-}
-
-class Payment {
-
-    readonly client: string
-    readonly details: string
-    readonly amount: number
-
-    constructor(userData: { client: string, details: string, amount: number }) {
-        this.client = userData.client
-        this.details = userData.details
-        this.amount = userData.amount
-    }
-
-    format() {
-        return `${this.client} is owned £${this.amount} for ${this.details}.`
-    }
-}
