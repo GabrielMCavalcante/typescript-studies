@@ -11,21 +11,23 @@ const orders = [];
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const userData = {
-        client: tofrom.value,
         details: details.value,
-        amount: amount.valueAsNumber
+        amount: amount.valueAsNumber,
     };
     let newOrder;
     if (type.value === 'invoice')
-        newOrder = new Invoice(userData);
+        newOrder = new Invoice({ ...userData, client: tofrom.value });
     else
-        newOrder = new Payment(userData);
+        newOrder = new Payment({ ...userData, recipient: tofrom.value });
     orders.push(newOrder);
     ordersList.innerHTML = '';
     orders.forEach(order => {
         const orderLi = document.createElement('li');
         const orderLiTitle = document.createElement('h4');
-        orderLiTitle.innerHTML = order.client;
+        if (order instanceof Invoice)
+            orderLiTitle.innerHTML = order.client;
+        else if (order instanceof Payment)
+            orderLiTitle.innerHTML = order.recipient;
         const orderLiDetails = document.createElement('p');
         orderLiDetails.innerHTML = order.format();
         orderLi.appendChild(orderLiTitle);

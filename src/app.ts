@@ -17,15 +17,16 @@ const orders: (Invoice | Payment)[] = []
 form.addEventListener('submit', (e: Event) => {
     e.preventDefault()
     const userData = { 
-        client: tofrom.value, 
         details: details.value, 
-        amount: amount.valueAsNumber 
+        amount: amount.valueAsNumber, 
     }
 
     let newOrder: Invoice | Payment
     
-    if (type.value === 'invoice') newOrder = new Invoice(userData)
-    else newOrder = new Payment(userData)
+    if (type.value === 'invoice') 
+        newOrder = new Invoice({...userData, client: tofrom.value}) 
+    else 
+        newOrder = new Payment({...userData, recipient: tofrom.value})
     
     orders.push(newOrder)
 
@@ -34,7 +35,11 @@ form.addEventListener('submit', (e: Event) => {
     orders.forEach(order => {
         const orderLi = document.createElement('li')
         const orderLiTitle = document.createElement('h4')
-        orderLiTitle.innerHTML = order.client
+
+        if(order instanceof Invoice)
+            orderLiTitle.innerHTML = order.client
+        else if(order instanceof Payment)
+            orderLiTitle.innerHTML = order.recipient
 
         const orderLiDetails = document.createElement('p')
         orderLiDetails.innerHTML = order.format()
