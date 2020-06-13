@@ -1,5 +1,6 @@
 import Invoice from './classes/Invoice.js'
 import Payment from './classes/Payment.js'
+import ListTemplate from './classes/ListTemplate.js'
 
 const form = document.querySelector('.new-item-form') as HTMLFormElement
 
@@ -8,45 +9,23 @@ const tofrom = document.querySelector('#tofrom') as HTMLInputElement
 const details = document.querySelector('#details') as HTMLInputElement
 const amount = document.querySelector('#amount') as HTMLInputElement
 
-const addBtn = document.querySelector('button')!
-
-const ordersList = document.querySelector('ul')!
-
-const orders: (Invoice | Payment)[] = []
+const ordersList = new ListTemplate(document.querySelector('ul')!)
 
 form.addEventListener('submit', (e: Event) => {
     e.preventDefault()
-    const userData = { 
-        details: details.value, 
-        amount: amount.valueAsNumber, 
-    }
 
     let newOrder: Invoice | Payment
     
+    let values: [string, string, number] = [
+        tofrom.value, 
+        details.value, 
+        amount.valueAsNumber
+    ]
+
     if (type.value === 'invoice') 
-        newOrder = new Invoice({...userData, client: tofrom.value}) 
+        newOrder = new Invoice(...values) 
     else 
-        newOrder = new Payment({...userData, recipient: tofrom.value})
+        newOrder = new Payment(...values)
     
-    orders.push(newOrder)
-
-    ordersList.innerHTML = ''
-
-    orders.forEach(order => {
-        const orderLi = document.createElement('li')
-        const orderLiTitle = document.createElement('h4')
-
-        if(order instanceof Invoice)
-            orderLiTitle.innerHTML = order.client
-        else if(order instanceof Payment)
-            orderLiTitle.innerHTML = order.recipient
-
-        const orderLiDetails = document.createElement('p')
-        orderLiDetails.innerHTML = order.format()
-
-        orderLi.appendChild(orderLiTitle)
-        orderLi.appendChild(orderLiDetails)
-
-        ordersList.appendChild(orderLi)
-    })
+    ordersList.render(newOrder, type.value, 'end')
 })
