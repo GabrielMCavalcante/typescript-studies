@@ -1,16 +1,18 @@
-export default class Payment {
+import HasFormatter from '../interfaces/HasFormatter'
 
-    readonly client: string
+export default class Payment implements HasFormatter {
+
+    readonly recipient: string
     readonly details: string
     readonly amount: number
 
-    constructor(userData: { client: string, details: string, amount: number }) {
-        this.client = userData.client
+    constructor(userData: { recipient: string, details: string, amount: number }) {
+        this.recipient = userData.recipient
         this.details = userData.details
         this.amount = userData.amount
     }
 
     format() {
-        return `${this.client} is owned £${this.amount} for ${this.details}.`
+        return `${this.recipient} is owed £${this.amount} for ${this.details}.`
     }
 }
