@@ -23,7 +23,7 @@ form.addEventListener('submit', (e: Event) => {
     
     if (type.value === 'invoice') newOrder = new Invoice(userData)
     else newOrder = new Payment(userData)
-
+    
     orders.push(newOrder)
 
     ordersList.innerHTML = ''
@@ -45,9 +45,9 @@ form.addEventListener('submit', (e: Event) => {
 
 class Invoice {
 
-    client: string
-    details: string
-    amount: number
+    readonly client: string
+    readonly details: string
+    readonly amount: number
 
     constructor(userData: { client: string, details: string, amount: number }) {
         this.client = userData.client
@@ -62,9 +62,9 @@ class Invoice {
 
 class Payment {
 
-    client: string
-    details: string
-    amount: number
+    readonly client: string
+    readonly details: string
+    readonly amount: number
 
     constructor(userData: { client: string, details: string, amount: number }) {
         this.client = userData.client
